@@ -139,6 +139,13 @@ class PdoGsb {
      * @return l'id, le nom et le prénom du comptable ou du visiteur sous la forme d'un tableau associatif
      */
 
+     public function getInfo($login, $mdp) {
+        if ($this->getInfosComptable($login, $mdp)) {
+            return $this->getInfosComptable($login, $mdp);
+        } else {
+            return $this->getInfosVisiteur($login, $mdp);
+        }
+    }
 
     /**
      * Retourne le mot de passe hashé du login entré en paramètre.
