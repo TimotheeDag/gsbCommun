@@ -99,6 +99,14 @@ class PdoGsb {
         return $requetePrepare->fetch();
     }
 
+        /**
+     * Retourne les informations d'un comptable
+     *
+     * @param String $login Login du comptable
+     * @param String $mdp   Mot de passe du comptable
+     *
+     * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
+     */
     public function getInfosComptable($login, $mdp) {
         $requetePrepare = $this->connexion->prepare(
                 'SELECT comptable.id AS id, comptable.nom AS nom, '
@@ -112,6 +120,14 @@ class PdoGsb {
         return $requetePrepare->fetch();
     }
 
+    /**
+     * renvoie les infos du comptable ou du visiteurs selon les logins entrés lors de la connexion
+     * 
+     * @param type $login
+     * @param type $mdp
+     * 
+     * @return l'id, le nom et le prénom du comptable ou du visiteur sous la forme d'un tableau associatif
+     */
     public function getInfo($login, $mdp) {
         if ($this->getInfosComptable($login, $mdp)) {
             return $this->getInfosComptable($login, $mdp);
