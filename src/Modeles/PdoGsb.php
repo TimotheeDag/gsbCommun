@@ -1,6 +1,6 @@
 <?php
 
-/**
+/**Bréwen
  * Classe d'accès aux données.
  *
  * PHP Version 8
