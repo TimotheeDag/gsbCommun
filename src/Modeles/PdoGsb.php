@@ -90,19 +90,44 @@ class PdoGsb
      *
      * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
      */
-    public function getInfosVisiteur($login): array
+    public function getInfosVisiteur($login, $mdp)
     {
         $requetePrepare = $this->connexion->prepare(
-            'SELECT visiteur.id AS id, visiteur.nom AS nom, '
-            . 'visiteur.prenom AS prenom, visiteur.email as email '
+            query: 'SELECT visiteur.id AS id, visiteur.nom AS nom, '
+            . 'visiteur.prenom AS prenom '
             . 'FROM visiteur '
-            . 'WHERE visiteur.login = :unLogin'
-
+            . 'WHERE visiteur.login = :unLogin AND visiteur.mdp = :unMdp'
         );
-        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        //$requetePrepare->bindParam(':unMdp', md5($mdp), PDO::PARAM_STR);
+        $requetePrepare->bindParam(param: ':unLogin', var: $login, type: PDO::PARAM_STR);
+        $requetePrepare->bindParam(param: ':unMdp', var: $mdp, type: PDO::PARAM_STR);
+        $_SESSION['utilisateur'] = "visiteur";
+
         $requetePrepare->execute();
         return $requetePrepare->fetch();
+    }
+
+    public function getInfosComptable($login, $mdp)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            query: 'SELECT comptable.id AS id, comptable.nom AS nom, '
+            . 'comptable.prenom AS prenom '
+            . 'FROM comptable '
+            . 'WHERE comptable.login = :unLogin AND comptable.mdp = :unMdp'
+        );
+        $requetePrepare->bindParam( ':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMdp',  $mdp, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $_SESSION['utilisateur'] = "comptable";
+        return $requetePrepare->fetch();
+    }
+
+    public function getInfo($login, $mdp)
+    {
+        if ($this->getInfosComptable(login: $login, mdp: $mdp)) {
+            return $this->getInfosComptable(login: $login, mdp: $mdp);
+        } else {
+            return $this->getInfosVisiteur(login: $login, mdp: $mdp);
+        }
     }
 
     public function getMdpVisiteur($login)
@@ -116,6 +141,9 @@ class PdoGsb
         $requetePrepare->execute();
         return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
     }
+
+
+
 
     public function setMdpHash()
     {
