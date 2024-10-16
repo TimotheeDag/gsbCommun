@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Gestion de l'accueil
+ * Gestion de l'accueilc
  *
  * PHP Version 8
  *
