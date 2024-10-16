@@ -119,54 +119,10 @@ class PdoGsb
         return $requetePrepare->fetch();
     }
 
-    public function getInfo($login)
-    {
-        if ($this->getInfosComptable(login: $login)) {
-            return $this->getInfosComptable(login: $login);
-        } else {
-            return $this->getInfosVisiteur(login: $login);
-        }
-    }
-
-    public function getMdpVisiteur($login)
-    {
-        $requetePrepare = $this->connexion->prepare(
-            'SELECT mdp '
-            . 'FROM visiteur '
-            . 'WHERE visiteur.login = :unLogin'
-        );
-        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->execute();
-        return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
-    }
-
-
-
-
-    public function setMdpHash()
-    {
-        $requetePrepare = $this->connexion->prepare(
-            "SELECT login, mdp "
-            . "FROM visiteur "
-
-        );
-        $requetePrepare->execute();
-        $result = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($result as $array) {
-            $login = $array['login'];
-            $mdp = $array['mdp'];
-            $hashMdp = password_hash($mdp, PASSWORD_DEFAULT);
-            //Pour la table visiteur
 
             $requetePrepare2 = $this->connexion->prepare("Update visiteur SET mdp = :unmdp WHERE login = :unlogin");
             $requetePrepare2->bindParam(':unlogin', $login, PDO::PARAM_STR);
             $requetePrepare2->bindParam(':unmdp', $hashMdp, PDO::PARAM_STR);
-            $requetePrepare2->execute();
-
-        }
-    }
-
-
 
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais
@@ -541,5 +497,27 @@ class PdoGsb
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
+    }
+
+    public function setCodeA2f($id, $code) {
+        $requetePrepare = $this->connexion->prepare(
+                'UPDATE visiteur '
+                . 'SET codea2f = :unCode '
+                . 'WHERE visiteur.id = :unIdVisiteur '
+        );
+        $requetePrepare->bindParam(':unCode', $code, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unIdVisiteur', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+    }
+
+    public function getCodeVisiteur($id) {
+        $requetePrepare = $this->connexion->prepare(
+                'SELECT visiteur.codea2f AS codea2f '
+                . 'FROM visiteur '
+                . 'WHERE visiteur.id = :unId'
+        );
+        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch()['codea2f'];
     }
 }
