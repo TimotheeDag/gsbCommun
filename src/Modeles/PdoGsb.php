@@ -90,43 +90,41 @@ class PdoGsb
      *
      * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
      */
-    public function getInfosVisiteur($login, $mdp)
+    public function getInfosVisiteur($login)
     {
         $requetePrepare = $this->connexion->prepare(
             query: 'SELECT visiteur.id AS id, visiteur.nom AS nom, '
             . 'visiteur.prenom AS prenom '
             . 'FROM visiteur '
-            . 'WHERE visiteur.login = :unLogin AND visiteur.mdp = :unMdp'
+            . 'WHERE visiteur.login = :unLogin'
         );
         $requetePrepare->bindParam(param: ':unLogin', var: $login, type: PDO::PARAM_STR);
-        $requetePrepare->bindParam(param: ':unMdp', var: $mdp, type: PDO::PARAM_STR);
         $_SESSION['utilisateur'] = "visiteur";
 
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
 
-    public function getInfosComptable($login, $mdp)
+    public function getInfosComptable($login)
     {
         $requetePrepare = $this->connexion->prepare(
             query: 'SELECT comptable.id AS id, comptable.nom AS nom, '
             . 'comptable.prenom AS prenom '
             . 'FROM comptable '
-            . 'WHERE comptable.login = :unLogin AND comptable.mdp = :unMdp'
+            . 'WHERE comptable.login = :unLogin'
         );
         $requetePrepare->bindParam( ':unLogin', $login, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMdp',  $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
         $_SESSION['utilisateur'] = "comptable";
         return $requetePrepare->fetch();
     }
 
-    public function getInfo($login, $mdp)
+    public function getInfo($login)
     {
-        if ($this->getInfosComptable(login: $login, mdp: $mdp)) {
-            return $this->getInfosComptable(login: $login, mdp: $mdp);
+        if ($this->getInfosComptable(login: $login)) {
+            return $this->getInfosComptable(login: $login);
         } else {
-            return $this->getInfosVisiteur(login: $login, mdp: $mdp);
+            return $this->getInfosVisiteur(login: $login);
         }
     }
 
@@ -168,29 +166,7 @@ class PdoGsb
         }
     }
 
-    public function setCodeA2f($id, $code)
-    {
-        $requetePrepare = $this->connexion->prepare(
-            'UPDATE visiteur '
-            . 'SET codea2f = :unCode '
-            . 'WHERE visiteur.id = :unIdVisiteur '
-        );
-        $requetePrepare->bindParam(':unCode', $code, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unIdVisiteur', $id, PDO::PARAM_STR);
-        $requetePrepare->execute();
-    }
 
-    public function getCodeVisiteur($id)
-    {
-        $requetePrepare = $this->connexion->prepare(
-            'SELECT visiteur.codea2f AS codea2f '
-            . 'FROM visiteur '
-            . 'WHERE visiteur.id = :unId'
-        );
-        $requetePrepare->bindParam(':unId', $id, PDO::PARAM_STR);
-        $requetePrepare->execute();
-        return $requetePrepare->fetch()['codea2f'];
-    }
 
     /**
      * Retourne sous forme d'un tableau associatif toutes les lignes de frais

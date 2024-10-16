@@ -39,8 +39,9 @@ switch ($action) {
             $nom = $getInfo['nom'];
             $prenom = $getInfo['prenom'];
             Utilitaires::connecter($id, $nom, $prenom);
-
+            include PATH_VIEWS . 'v_accueil.php';
         }
+
         break;
     default:
         include PATH_VIEWS . 'v_connexion.php';
