@@ -23,8 +23,7 @@ abstract class Utilitaires {
      * Teste si un quelconque visiteur est connecté
      *
      * @return vrai ou faux
-     */
-    public static function estConnecte(): bool {
+
         return isset($_SESSION['idVisiteur']) && isset($_SESSION['codeA2f']);
     }
 

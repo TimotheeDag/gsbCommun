@@ -7,7 +7,7 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    Réseau CERTA <contact@reseaucerta.org>
+ * @author    Réseau CERTA <contact@reseaucerta.org
  * @author    José GIL <jgil@ac-nice.fr>
  * @copyright 2017 Réseau CERTA
  * @license   Réseau CERTA
@@ -29,7 +29,6 @@ switch ($action) {
         $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $visiteur = $pdo->getInfosVisiteur($login);
         if (!password_verify($mdp, $pdo->getMdpVisiteur($login))) {
             Utilitaires::ajouterErreur('Login ou mot de passe incorrect');
             include PATH_VIEWS . 'v_erreurs.php';
@@ -39,13 +38,9 @@ switch ($action) {
             $nom = $visiteur['nom'];
             $prenom = $visiteur['prenom'];
             Utilitaires::connecter($id, $nom, $prenom);
-            $email = $visiteur['email'];
-            $code = rand(1000, 9999);
-            $pdo->setCodeA2f($id, $code);
-            mail($email, '[GSB-AppliFrais] Code de vérification', "Code : $code");
-            include PATH_VIEWS . 'v_code2facteurs.php';
-            
+
         }
+
         break;
         case 'valideA2fConnexion':
     $code = filter_input(INPUT_POST, 'code', FILTER_SANITIZE_NUMBER_INT);
