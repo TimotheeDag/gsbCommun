@@ -45,7 +45,6 @@
                                 title="Laboratoire Galaxy-Swiss Bourdin">
                         </h1>
                     </div>
-                    <?php if ($_SERVER == 'Comptable') { ?>
                         <div class="col-md-8">
                             <ul class="nav nav-pills pull-right" role="tablist">
                                 <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
@@ -60,7 +59,6 @@
                                         Afficher mes fiches de frais
                                     </a>
                                 </li>
-                            <?php } else { ?>
                                 <ul class="nav nav-pills pull-right" role="tablist">
                                     <li <?php if (!$uc || $uc == 'accueil') { ?>class="active" <?php } ?>>
                                         <a href="index.php">
@@ -80,7 +78,6 @@
                                             Afficher mes fiches de frais
                                         </a>
                                     </li>
-                                <?php } ?>
                                 <li <?php if ($uc == 'deconnexion') { ?>class="active" <?php } ?>>
                                     <a href="index.php?uc=deconnexion&action=demandeDeconnexion">
                                         <span class="glyphicon glyphicon-log-out"></span>

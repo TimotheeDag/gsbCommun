@@ -139,6 +139,18 @@ class PdoGsb
         $requetePrepare->execute();
         return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
     }
+    
+        public function getMdpComptable($login)
+    {
+        $requetePrepare = $this->connexion->prepare(
+            'SELECT mdp '
+            . 'FROM comptable '
+            . 'WHERE comptable.login = :unLogin'
+        );
+        $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        return $requetePrepare->fetch(PDO::FETCH_OBJ)->mdp;
+    }
 
 
 
@@ -166,6 +178,29 @@ class PdoGsb
         }
     }
 
+        public function setMdpHashComptable()
+    {
+        $requetePrepare = $this->connexion->prepare(
+            "SELECT login, mdp "
+            . "FROM comptable "
+
+        );
+        $requetePrepare->execute();
+        $result = $requetePrepare->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($result as $array) {
+            $login = $array['login'];
+            $mdp = $array['mdp'];
+            $hashMdp = password_hash($mdp, PASSWORD_DEFAULT);
+            //Pour la table visiteur
+
+            $requetePrepare2 = $this->connexion->prepare("Update comptable SET mdp = :unmdp WHERE login = :unlogin");
+            $requetePrepare2->bindParam(':unlogin', $login, PDO::PARAM_STR);
+            $requetePrepare2->bindParam(':unmdp', $hashMdp, PDO::PARAM_STR);
+            $requetePrepare2->execute();
+
+        }
+    }
+    
 
 
     /**

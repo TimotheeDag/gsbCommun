@@ -29,18 +29,33 @@ switch ($action) {
         $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $getInfo = $pdo->getInfo($login, $mdp);
-        if (!password_verify($mdp, $pdo->getMdpVisiteur($login))) {
-            Utilitaires::ajouterErreur('Login ou mot de passe incorrect');
-            include PATH_VIEWS . 'v_erreurs.php';
-            include PATH_VIEWS . 'v_connexion.php';
+        $getInfo = $pdo->getInfo($login);
+        if ($_SESSION['utilisateur'] == "visiteur") {
+            if (!password_verify($mdp, $pdo->getMdpVisiteur($login))) {
+                Utilitaires::ajouterErreur('Login ou mot de passe incorrect');
+                include PATH_VIEWS . 'v_erreurs.php';
+                include PATH_VIEWS . 'v_connexion.php';
+            } else {
+                $id = $getInfo['id'];
+                $nom = $getInfo['nom'];
+                $prenom = $getInfo['prenom'];
+                Utilitaires::connecter($id, $nom, $prenom);
+                include PATH_VIEWS . 'v_accueil.php';
+            }
         } else {
-            $id = $getInfo['id'];
-            $nom = $getInfo['nom'];
-            $prenom = $getInfo['prenom'];
-            Utilitaires::connecter($id, $nom, $prenom);
-            include PATH_VIEWS . 'v_accueil.php';
+            if (!password_verify($mdp, $pdo->getMdpComptable($login))) {
+                Utilitaires::ajouterErreur('Login ou mot de passe incorrect');
+                include PATH_VIEWS . 'v_erreurs.php';
+                include PATH_VIEWS . 'v_connexion.php';
+            } else {
+                $id = $getInfo['id'];
+                $nom = $getInfo['nom'];
+                $prenom = $getInfo['prenom'];
+                Utilitaires::connecter($id, $nom, $prenom);
+                include PATH_VIEWS . 'v_accueil.php';
+            }
         }
+
 
         break;
     default:

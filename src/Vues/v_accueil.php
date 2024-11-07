@@ -21,7 +21,7 @@
 	Les éléments reçus après le 10 seront reportés sur le mois suivant.
 </div>
 <div id="accueil">
-    <?php if ($_SESSION == "visiteur" ) { ?>
+    <?php if ($_SESSION['utilisateur'] == "visiteur" ) { ?>
     <h2>
         Gestion des frais<small> - Visiteur : 
             <?= $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?></small>
