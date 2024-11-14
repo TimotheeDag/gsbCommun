@@ -5,8 +5,10 @@ html {
 body {
   margin-bottom: 60px; /* Margin bottom by footer height */
 }
+
 .header {
     margin-top: 10px;
+    color: #67b168
 }
 .footer {
   position: absolute;

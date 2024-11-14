@@ -27,12 +27,38 @@
         Gestion des frais<small> - Visiteur : 
             <?= $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?></small>
     </h2>
+    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-bookmark"></span>
+                    Navigation
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <a href="index.php?uc=gererFrais&action=saisirFrais"
+                           class="btn btn-success btn-lg" role="button">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            <br>Renseigner la fiche de frais</a>
+                        <a href="index.php?uc=etatFrais&action=selectionnerMois"
+                           class="btn btn-primary btn-lg" role="button">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            <br>Afficher mes fiches de frais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <?php }else{ ?>
         <h2>
         Gestion des fiches de frais<small> - Comptable : 
             <?= $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?></small>
     </h2>
-    <?php } ?>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -47,16 +73,17 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=gererFrais&action=saisirFrais"
-                           class="btn btn-warning btn-lg" role="button">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <br>Renseigner la fiche de frais</a>
+                           class="btn btn-success btn-lg" role="button">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <br>Valider la fiche de frais</a>
                         <a href="index.php?uc=etatFrais&action=selectionnerMois"
-                           class="btn btn-warning btn-lg" role="button">
-                            <span class="glyphicon glyphicon-list-alt"></span>
-                            <br>Afficher mes fiches de frais</a>
+                           class="btn btn-primary btn-lg" role="button">
+                            <span class="glyphicon glyphicon-euro"></span>
+                            <br>Suivre le paiement des fiches de frais</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+    <?php } ?>
